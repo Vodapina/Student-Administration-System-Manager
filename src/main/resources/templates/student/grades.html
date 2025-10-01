@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>My Grades - Student Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; }
+        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 30px 0; margin-bottom: 30px; }
+        .header-content { max-width: 1000px; margin: 0 auto; padding: 0 20px; }
+        .card { background: white; padding: 30px; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-left: 4px solid #3498db; }
+        .btn { background: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 8px 8px 8px 0; }
+        .btn:hover { background: #2980b9; }
+        .grade-card { background: #f8f9fa; padding: 20px; margin: 15px 0; border-radius: 8px; border-left: 4px solid #27ae60; }
+        .grade-A { border-left-color: #27ae60; background: #d4edda; }
+        .grade-B { border-left-color: #3498db; background: #d6eaf8; }
+        .grade-C { border-left-color: #f39c12; background: #fef9e7; }
+        .grade-D { border-left-color: #e67e22; background: #fdebd0; }
+        .grade-F { border-left-color: #e74c3c; background: #fadbd8; }
+        h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        h2 { color: #2c3e50; margin-top: 0; }
+        .no-data { text-align: center; padding: 40px; color: #7f8c8d; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>My Academic Grades</h1>
+        <p>Form 6 Science - Biology Grades</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2>Biology Grades</h2>
+        <p>Here are your grades for Form 6 Biology:</p>
+
+        <div th:if="${grades != null and !grades.empty}">
+            <div th:each="grade : ${grades}" class="grade-card" th:classappend="'grade-' + ${grade.grade}">
+                <h3>Term: <span th:text="${grade.term}"></span></h3>
+                <p><strong>Grade:</strong> <span th:text="${grade.grade}"></span></p>
+                <p th:if="${grade.comments}"><strong>Comments:</strong> <span th:text="${grade.comments}"></span></p>
+                <p><strong>Date Recorded:</strong> <span th:text="${#temporals.format(grade.createdAt, 'dd/MM/yyyy')}"></span></p>
+            </div>
+        </div>
+
+        <div th:if="${grades == null or grades.empty}" class="no-data">
+            <h3>No Grades Available</h3>
+            <p>You don't have any grades recorded yet.</p>
+            <p>Please check back later or contact your Biology teacher.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Student Navigation</h3>
+        <a href="/students/my/attendance" class="btn">View My Attendance</a>
+        <a href="/dashboard" class="btn" style="background: #95a5a6;">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,13 +1,9 @@
 package com.Assignment1.Group15.StudentAdministrationSystemManager.controller;
 
-import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.Grade;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.Student;
-import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.Subject;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.service.GradeService;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.service.StudentService;
-import com.Assignment1.Group15.StudentAdministrationSystemManager.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -24,27 +20,36 @@ public class TeacherController {
     @Autowired
     private GradeService gradeService;
 
-    @Autowired
-    private SubjectService subjectService;
-
     // Biology Grade Entry Page
     @GetMapping("/biology/grades")
     public String biologyGradesPage(Model model) {
-        // Get all Form 6 students (assuming they're all Biology students for demo)
-        List<Student> biologyStudents = studentService.getStudentsByFormLevel("6");
+        try {
+            System.out.println("=== TEACHER GRADES PAGE LOADING ===");
 
-        // Get Biology subject
-        Subject biology = subjectService.getSubjectByCode("BIO6")
-                .orElseThrow(() -> new RuntimeException("Biology subject not found"));
+            // DEBUG: Check if studentService is working
+            System.out.println("StudentService: " + (studentService != null ? "OK" : "NULL"));
 
-        model.addAttribute("students", biologyStudents);
-        model.addAttribute("subject", biology);
-        model.addAttribute("grade", new Grade());
+            // Get all students
+            List<Student> students = studentService.getAllStudents();
+            System.out.println("Found " + students.size() + " students");
 
-        return "teacher/biology-grades";
+            // DEBUG: Print each student
+            for (Student student : students) {
+                System.out.println("Student: " + student.getFullName() + " ID: " + student.getId());
+            }
+
+            model.addAttribute("students", students);
+            return "teacher/biology-grades";
+
+        } catch (Exception e) {
+            System.out.println("ERROR in biologyGradesPage: " + e.getMessage());
+            e.printStackTrace(); // THIS WILL SHOW THE FULL STACK TRACE
+            model.addAttribute("error", "Error loading students: " + e.getMessage());
+            return "teacher/biology-grades";
+        }
     }
 
-    // Process Grade Entry
+    // FIXED: Now using your enterBiologyGrade method!
     @PostMapping("/biology/grades/enter")
     public String enterBiologyGrade(
             @RequestParam Long studentId,
@@ -53,24 +58,37 @@ public class TeacherController {
             Model model) {
 
         try {
-            Student student = studentService.getStudentById(studentId)
-                    .orElseThrow(() -> new RuntimeException("Student not found"));
+            System.out.println("ENTERING GRADE - Student: " + studentId + ", Grade: " + grade + ", Term: " + term);
 
+            // Get the student
+            Student student = studentService.getStudentById(studentId)
+                    .orElseThrow(() -> new RuntimeException("Student not found with ID: " + studentId));
+
+            // USE YOUR EXISTING METHOD - this handles Biology subject automatically!
             gradeService.enterBiologyGrade(student, grade, term);
 
-            model.addAttribute("success", "Grade entered successfully for " + student.getFullName());
-        } catch (Exception e) {
-            model.addAttribute("error", "Error entering grade: " + e.getMessage());
-        }
+            System.out.println("GRADE SAVED SUCCESSFULLY!");
 
-        return "redirect:/teacher/biology/grades";
+            // Success message will be shown after redirect
+            return "redirect:/teacher/biology/grades?success=true&student=" + student.getFullName() + "&grade=" + grade;
+
+        } catch (Exception e) {
+            System.out.println("ERROR entering grade: " + e.getMessage());
+            e.printStackTrace();
+            return "redirect:/teacher/biology/grades?error=" + e.getMessage();
+        }
     }
 
-    // View All Biology Grades
+    // View Biology Grades
     @GetMapping("/biology/grades/view")
     public String viewBiologyGrades(Model model) {
-        List<Grade> biologyGrades = gradeService.getAllBiologyGrades();
-        model.addAttribute("grades", biologyGrades);
-        return "teacher/view-biology-grades";
+        try {
+            var grades = gradeService.getAllBiologyGrades();
+            model.addAttribute("grades", grades);
+            return "teacher/view-biology-grades";
+        } catch (Exception e) {
+            model.addAttribute("error", "Error loading grades: " + e.getMessage());
+            return "teacher/view-biology-grades";
+        }
     }
 }

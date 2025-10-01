@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biology Grades</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f5f5f5; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; }
+        .btn { background: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 10px 0; border: none; cursor: pointer; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #f5c6cb; }
+        .form-group { margin: 15px 0; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        select, input { padding: 10px; width: 100%; max-width: 300px; border: 2px solid #ddd; border-radius: 5px; }
+        .debug { background: #fff3cd; color: #856404; padding: 10px; border-radius: 5px; margin: 10px 0; font-family: monospace; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Biology Grade Management</h1>
+    <p>Form 6 Biology - Enter Student Grades</p>
+
+    <!-- DEBUG INFO -->
+    <div class="debug">
+        <strong>DEBUG:</strong>
+        Page: biology-grades.html |
+        Controller: Working! |
+        Time: <span th:text="${#temporals.format(#temporals.createNow(), 'HH:mm:ss')}"></span>
+    </div>
+
+    <!-- SUCCESS MESSAGE -->
+    <div th:if="${param.success}" class="success">
+        ✅ Grade entered successfully!
+        <span th:if="${param.student}"> for <strong th:text="${param.student}"></strong></span>
+        <span th:if="${param.grade}">: <strong th:text="${param.grade}"></strong></span>
+    </div>
+
+    <!-- ERROR MESSAGE -->
+    <div th:if="${param.error}" class="error">
+        ❌ Error: <span th:text="${param.error}"></span>
+    </div>
+
+    <!-- MESSAGE FROM CONTROLLER -->
+    <div th:if="${message}" class="success" th:text="${message}"></div>
+
+    <!-- Grade Entry Form -->
+    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0;">
+        <h3>Enter Biology Grade</h3>
+        <form th:action="@{/teacher/biology/grades/enter}" method="post">
+            <div class="form-group">
+                <label for="studentId">Select Student:</label>
+                <select id="studentId" name="studentId" required>
+                    <option value="">Choose student...</option>
+                    <option th:each="student : ${students}"
+                            th:value="${student.id}"
+                            th:text="${student.fullName + ' (' + student.studentId + ')'}">
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="term">Term:</label>
+                <select id="term" name="term" required>
+                    <option value="">Select term...</option>
+                    <option value="Term 1">Term 1</option>
+                    <option value="Term 2">Term 2</option>
+                    <option value="Final">Final</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="grade">Grade:</label>
+                <select id="grade" name="grade" required>
+                    <option value="">Select grade...</option>
+                    <option value="A">A (90-100%)</option>
+                    <option value="B">B (80-89%)</option>
+                    <option value="C">C (70-79%)</option>
+                    <option value="D">D (60-69%)</option>
+                    <option value="F">F (0-59%)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn" style="background: #27ae60;">Enter Grade</button>
+        </form>
+    </div>
+
+    <!-- Student List -->
+    <div th:if="${students != null and !students.empty}">
+        <h3>Available Students (<span th:text="${students.size()}"></span>):</h3>
+        <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
+            <ul>
+                <li th:each="student : ${students}"
+                    th:text="${student.fullName + ' - ' + student.studentId + ' (ID: ' + student.id + ')'}"></li>
+            </ul>
+        </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+        <a href="/teacher/biology/grades/view" class="btn">View All Biology Grades</a>
+        <a href="/dashboard" class="btn" style="background: #95a5a6;">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>

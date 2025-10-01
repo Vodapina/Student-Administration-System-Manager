@@ -43,6 +43,11 @@ public class StudentService {
         return studentRepository.findByFormLevel(formLevel);
     }
 
+    // In StudentService.java - add this method:
+    public Optional<Student> getStudentByUserUsername(String username) {
+        return studentRepository.findByUser_Username(username);
+    }
+
     // Update student
     public Student updateStudent(Student student) {
         return studentRepository.save(student);
