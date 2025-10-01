@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Enter Biology Grades - Teacher Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 8px 8px 8px 0;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid #27ae60;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .grade-form {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .student-card {
+            background: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        h2 { color: #2c3e50; margin-top: 0; }
+        h3 { color: #34495e; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>Biology Grade Management</h1>
+        <p>Form 6 Biology - Enter and Manage Student Grades</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Success/Error Messages -->
+    <div th:if="${success}" class="alert success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert error" th:text="${error}"></div>
+
+    <div class="card">
+        <h2>Enter Biology Grades</h2>
+        <p>Select a student and enter their Biology grade for the selected term.</p>
+
+        <!-- Grade Entry Form -->
+        <div class="grade-form">
+            <form th:action="@{/teacher/biology/grades/enter}" method="post">
+                <div class="form-group">
+                    <label for="studentId">Select Student:</label>
+                    <select id="studentId" name="studentId" required>
+                        <option value="">Choose a student...</option>
+                        <option th:each="student : ${students}"
+                                th:value="${student.id}"
+                                th:text="${student.fullName + ' (' + student.studentId + ')'}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="term">Term:</label>
+                    <select id="term" name="term" required>
+                        <option value="">Select term...</option>
+                        <option value="Term 1">Term 1</option>
+                        <option value="Term 2">Term 2</option>
+                        <option value="Term 3">Term 3</option>
+                        <option value="Final">Final Grade</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="grade">Grade:</label>
+                    <select id="grade" name="grade" required>
+                        <option value="">Select grade...</option>
+                        <option value="A">A (90-100%)</option>
+                        <option value="B">B (80-89%)</option>
+                        <option value="C">C (70-79%)</option>
+                        <option value="D">D (60-69%)</option>
+                        <option value="F">F (0-59%)</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Enter Grade</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Student List -->
+    <div class="card">
+        <h3>Form 6 Biology Students</h3>
+        <div th:if="${students.empty}">
+            <p>No students found in Form 6 Biology class.</p>
+        </div>
+
+        <div th:each="student : ${students}" class="student-card">
+            <h4 th:text="${student.fullName}">Student Name</h4>
+            <p><strong>Student ID:</strong> <span th:text="${student.studentId}"></span></p>
+            <p><strong>Form Level:</strong> <span th:text="${student.formLevel}"></span></p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card">
+        <h3>Teacher Navigation</h3>
+        <a href="/teacher/biology/grades/view" class="btn">View All Biology Grades</a>
+        <a href="/students" class="btn">Manage Biology Students</a>
+        <a href="/dashboard" class="btn btn-secondary">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>
