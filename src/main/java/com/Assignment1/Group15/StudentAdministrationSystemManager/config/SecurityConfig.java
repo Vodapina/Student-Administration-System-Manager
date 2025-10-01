@@ -42,9 +42,8 @@ public class SecurityConfig {
                         .requestMatchers("/", "/register", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/teacher/**").hasRole("TEACHER")
-                        .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER") // Students// cannot access student management
-                        .requestMatchers("/student/**").hasRole("STUDENT")  // Student personal pages
-                        .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER")  // Student management
+                        .requestMatchers("/student/**").hasRole("STUDENT")
+                        .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

@@ -11,13 +11,14 @@ public class HomeController {
         return "index";
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
 
     @GetMapping("/dashboard")
     public String dashboard() {
-        return "dashboard"; // Simple dashboard for all roles
+        return "dashboard";
+    }
+
+    @GetMapping("/logout-success")
+    public String logoutSuccess() {
+        return "redirect:/?logout";
     }
 }
