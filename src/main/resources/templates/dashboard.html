@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - Student Administration System</title>
+    <style>
+        /* Clean Professional Styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            background: #3498db;
+            color: white;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 6px;
+            margin: 8px 8px 8px 0;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #2980b9;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-success {
+            background: #27ae60;
+        }
+
+        .btn-success:hover {
+            background: #219653;
+        }
+
+        .btn-danger {
+            background: #e74c3c;
+        }
+
+        .btn-danger:hover {
+            background: #c0392b;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            border-left: 4px solid #3498db;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .feature-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e9ecef;
+        }
+
+        .feature-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        .user-info {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin-top: 15px;
+        }
+
+        h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        h2 { color: #2c3e50; margin-top: 0; }
+        h3 { color: #34495e; }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 15px 0;
+        }
+
+        li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        li:last-child { border-bottom: none; }
+
+        .role-badge {
+            background: #3498db;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .welcome-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>Student Administration System</h1>
+        <div class="user-info">
+            Welcome, <strong th:text="${#authentication.name}">User</strong>
+            <span class="role-badge" th:text="${#authentication.authorities}">Role</span>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Student Section -->
+    <div th:if="${#authorization.expression('hasRole(''STUDENT'')')}">
+        <div class="card">
+            <h2>Student Dashboard</h2>
+            <div class="welcome-message">
+                Welcome to your Form 6 Science student portal. This is your central hub for accessing grades,
+                attendance records, and academic information specific to your Form 6 Science program.
+            </div>
+
+            <div class="grid-2">
+                <div class="feature-box">
+                    <h3>My Form 6 Subjects</h3>
+                    <ul>
+                        <li><strong>Biology</strong> - Form 6 Science</li>
+                        <li><strong>Chemistry</strong> - Form 6 Science</li>
+                        <li><strong>Physics</strong> - Form 6 Science</li>
+                        <li><strong>Mathematics</strong> - Form 6 Science</li>
+                        <li><strong>Computer Studies</strong> - Form 6 Science</li>
+                        <li><strong>English</strong> - Form 6 Science</li>
+                    </ul>
+                </div>
+
+                <div class="feature-box">
+                    <h3>Quick Actions</h3>
+                    <a href="/student/grades" class="btn">View My Grades</a>
+                    <a href="/student/attendance" class="btn">Check Attendance</a>
+                    <a href="#" class="btn">My Profile</a>
+                    <a href="#" class="btn">Class Schedule</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Section -->
+    <div th:if="${#authorization.expression('hasRole(''TEACHER'')')}">
+        <div class="card">
+            <h2>Teacher Dashboard</h2>
+            <div class="welcome-message">
+                Welcome to the Teacher Portal. You are currently assigned to teach <strong>Form 6 Biology</strong>.
+                Here you can manage your Form 6 Biology classes, enter grades, and track student progress.
+            </div>
+
+            <div class="grid-2">
+                <div class="feature-box">
+                    <h3>Form 6 Biology Class</h3>
+                    <p><strong>Subject:</strong> Biology</p>
+                    <p><strong>Form Level:</strong> Form 6 Science</p>
+                    <p><strong>Your Role:</strong> Biology Teacher</p>
+                    <a href="/students" class="btn btn-success">Manage Biology Students</a>
+                </div>
+
+                <div class="feature-box">
+                    <h3>Teaching Tools</h3>
+                    <a href="#" class="btn">Enter Biology Grades</a>
+                    <a href="#" class="btn">Take Biology Attendance</a>
+                    <a href="#" class="btn">Biology Class Schedule</a>
+                    <a href="#" class="btn">Biology Resources</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Section -->
+    <div th:if="${#authorization.expression('hasRole(''ADMIN'')')}">
+        <div class="card">
+            <h2>Administrator Dashboard</h2>
+            <div class="welcome-message">
+                Welcome to the System Administration Panel. You have full access to manage users,
+                view system-wide reports, and oversee all academic operations across the institution.
+            </div>
+
+            <div class="grid-2">
+                <div class="feature-box">
+                    <h3>System Management</h3>
+                    <a href="/students" class="btn">Manage All Students</a>
+                    <a href="#" class="btn">User Management</a>
+                    <a href="#" class="btn">System Settings</a>
+                </div>
+
+                <div class="feature-box">
+                    <h3>Reports & Analytics</h3>
+                    <a href="#" class="btn">Student Reports</a>
+                    <a href="#" class="btn">Attendance Summary</a>
+                    <a href="#" class="btn">Academic Analytics</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card">
+        <h3>System Navigation</h3>
+        <a href="/" class="btn btn-secondary">Home Page</a>
+        <a href="/logout" class="btn btn-danger">Logout</a>
+    </div>
+</div>
+</body>
+</html>
