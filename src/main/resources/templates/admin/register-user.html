@@ -20,7 +20,7 @@
 </head>
 <body>
 <h2>Register New User</h2>
-<p style="color: #6c757d;">Administrator: Register new students or teachers for the system.</p>
+<p style="color: #6c757d;">Administrator: Register new students, teachers, or administrators for the system.</p>
 
 <!-- Success Message -->
 <div th:if="${success}" class="alert success" th:text="${success}"></div>
@@ -53,6 +53,7 @@
             <option value="">Select Role</option>
             <option value="STUDENT" th:selected="${param.role == 'STUDENT'}">Student</option>
             <option value="TEACHER" th:selected="${param.role == 'TEACHER'}">Teacher</option>
+            <option value="ADMIN" th:selected="${param.role == 'ADMIN'}">Administrator</option> <!-- ADDED THIS LINE -->
         </select>
         <small>Select the user's role in the system</small>
     </div>

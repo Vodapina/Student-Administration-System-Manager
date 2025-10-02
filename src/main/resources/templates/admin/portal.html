@@ -48,15 +48,6 @@
             background: #f8f9fa;
             transform: translateY(-2px);
         }
-        .btn-outline {
-            background: transparent;
-            border: 2px solid white;
-            color: white;
-        }
-        .btn-outline:hover {
-            background: white;
-            color: #2c3e50;
-        }
         .back-link {
             display: inline-block;
             margin-top: 20px;
@@ -84,22 +75,13 @@
         <h1>Administration Portal</h1>
 
         <!-- Info Message -->
-        <div th:if="${message}" class="alert info" th:text="${message}"></div>
-
-        <p style="margin-bottom: 30px; opacity: 0.9;">
-            System administration and user management portal
-        </p>
-
-        <!-- Show Register button only if no admin exists -->
-        <div th:if="${allowRegistration}">
-            <a th:href="@{/register}" class="btn">Create Administrator Account</a>
-            <div style="font-size: 14px; opacity: 0.8; margin: 10px 0;">
-                First-time setup: Create the initial administrator account
-            </div>
+        <div class="alert info">
+            <strong>System Administration</strong><br>
+            Access restricted to authorized administrators only.
         </div>
 
-        <!-- Always show Login button -->
-        <a th:href="@{/login}" class="btn btn-outline">Administrator Login</a>
+        <!-- Only show Login button -->
+        <a href="/login" class="btn">Administrator Login</a>
 
         <a href="/" class="back-link">← Back to Main Portal</a>
     </div>

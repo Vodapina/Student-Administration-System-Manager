@@ -39,34 +39,41 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Public routes
-                        .requestMatchers("/", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+                        // Public pages - anyone can access
+                        .requestMatchers("/", "/login", "/register", "/css/**", "/js/**", "/images/**").permitAll()
 
-                        // Admin routes - only ADMIN can access
+                        // Admin pages - only ADMIN role
                         .requestMatchers("/admin/**").hasRole("ADMIN")
 
-                        // Teacher routes - only TEACHER can access
+                        // Teacher pages - only TEACHER role
                         .requestMatchers("/teacher/**").hasRole("TEACHER")
 
-                        // Student routes - only STUDENT can access
+                        // Student pages - only STUDENT role
                         .requestMatchers("/student/**").hasRole("STUDENT")
 
-                        // Student management - ADMIN and TEACHER can access
+                        // Student management - ADMIN and TEACHER
                         .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER")
 
-                        // Dashboard access based on role
-                        .requestMatchers("/dashboard").authenticated()
-
+                        // All other requests require authentication
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/dashboard", true)
+                        .loginProcessingUrl("/login")
+                        .defaultSuccessUrl("/dashboard", true) // Always go to dashboard after login
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutSuccessUrl("/?logout")
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/?logout=true")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
                         .permitAll()
+                )
+                .sessionManagement(session -> session
+                        .maximumSessions(1)
+                        .expiredUrl("/login?expired=true")
                 );
 
         return http.build();

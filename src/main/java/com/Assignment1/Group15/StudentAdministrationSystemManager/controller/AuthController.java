@@ -117,6 +117,8 @@ public class AuthController {
         return "admin/register-user";
     }
 
+
+
     // ADMIN-ONLY: Process user registration (for creating students/teachers)
     @PostMapping("/admin/register-user")
     public String registerUserAsAdmin(
@@ -160,4 +162,17 @@ public class AuthController {
     public String showLoginForm() {
         return "login";
     }
+    @GetMapping("/student-login")
+    public String showStudentLogin() {
+        System.out.println("=== STUDENT/TEACHER LOGIN PAGE ===");
+        return "student-login";
+    }
+
+    // Admin login page
+    @GetMapping("/admin-login")
+    public String showAdminLogin() {
+        System.out.println("=== ADMIN LOGIN PAGE ===");
+        return "admin-login";
+    }
+
 }

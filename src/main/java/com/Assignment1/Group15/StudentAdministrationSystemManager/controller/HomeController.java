@@ -21,13 +21,21 @@ public class HomeController {
 
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication, Model model) {
+        System.out.println("=== DASHBOARD ACCESSED ===");
+
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
+            System.out.println("User: " + username + " is authenticated");
+
             User user = userService.findByUsername(username);
             if (user != null) {
+                System.out.println("User role: " + user.getRole());
                 model.addAttribute("user", user);
+                return "dashboard"; // Always return the dashboard template
             }
         }
-        return "dashboard";
+
+        // If not authenticated, redirect to login
+        return "redirect:/login";
     }
 }
