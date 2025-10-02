@@ -124,6 +124,11 @@
     <div th:if="${param.error}" class="alert error">
         Invalid username or password.
     </div>
+    <!-- Add this to your existing login.html -->
+    <div th:if="${param.fromAdmin}" style="background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 4px; margin-bottom: 20px; border-left: 4px solid #3498db;">
+        <strong>Administrator Login</strong><br>
+        Please login with administrator credentials.
+    </div>
 
     <form th:action="@{/login}" method="post">
         <div class="form-group">

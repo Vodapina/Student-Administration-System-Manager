@@ -7,6 +7,11 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 public class User {
 
+    // Add these role constants
+    public static final String ROLE_STUDENT = "STUDENT";
+    public static final String ROLE_TEACHER = "TEACHER";
+    public static final String ROLE_ADMIN = "ADMIN";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -55,6 +60,19 @@ public class User {
 
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    // Helper methods to check roles
+    public boolean isStudent() {
+        return ROLE_STUDENT.equals(this.role);
+    }
+
+    public boolean isTeacher() {
+        return ROLE_TEACHER.equals(this.role);
+    }
+
+    public boolean isAdmin() {
+        return ROLE_ADMIN.equals(this.role);
+    }
 
     @Override
     public String toString() {

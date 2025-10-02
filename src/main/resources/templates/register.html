@@ -22,6 +22,7 @@
             padding: 8px;
             border: 1px solid #ddd;
             border-radius: 4px;
+            box-sizing: border-box;
         }
         button {
             background-color: #007bff;
@@ -46,14 +47,20 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
     </style>
 </head>
 <body>
-<h2>Register New Account</h2>
-<p style="color: #7f8c8d; font-size: 14px; margin-bottom: 20px;">
-    <strong>Demo System:</strong> This is a sample student administration system.
-    Register with any role to explore the features.
-</p>
+<h2>Register Administrator Account</h2>
+
+<!-- Info Message -->
+<div style="background: #d1ecf1; color: #0c5460; padding: 15px; border-radius: 4px; margin-bottom: 20px;">
+    <strong>First-Time Setup:</strong> Create the initial administrator account.
+</div>
 
 <!-- Success Message -->
 <div th:if="${success}" class="alert success" th:text="${success}"></div>
@@ -61,6 +68,7 @@
 <!-- Error Message -->
 <div th:if="${error}" class="alert error" th:text="${error}"></div>
 
+<!-- Registration Form -->
 <form th:action="@{/register}" method="post">
     <div class="form-group">
         <label for="username">Username:</label>
@@ -80,17 +88,16 @@
     <div class="form-group">
         <label for="role">Role:</label>
         <select id="role" name="role" required>
-            <option value="">Select Role</option>
-            <option value="STUDENT">Student</option>
-            <option value="TEACHER">Teacher</option>
             <option value="ADMIN">Administrator</option>
         </select>
     </div>
 
-    <button type="submit">Register</button>
+    <button type="submit">Create Administrator Account</button>
 </form>
 
-<p>Already have an account? <a href="/login">Login here</a></p>
-<p><a href="/">Back to Home</a></p>
+<p style="margin-top: 20px;">
+    <a href="/admin/portal">← Back to Admin Portal</a> |
+    <a href="/login">Already have an account?</a>
+</p>
 </body>
 </html>

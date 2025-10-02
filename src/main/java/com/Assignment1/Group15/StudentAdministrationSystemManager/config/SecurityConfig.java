@@ -39,11 +39,24 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
+                        // Public routes
                         .requestMatchers("/", "/register", "/css/**", "/js/**", "/images/**").permitAll()
+
+                        // Admin routes - only ADMIN can access
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+
+                        // Teacher routes - only TEACHER can access
                         .requestMatchers("/teacher/**").hasRole("TEACHER")
+
+                        // Student routes - only STUDENT can access
                         .requestMatchers("/student/**").hasRole("STUDENT")
+
+                        // Student management - ADMIN and TEACHER can access
                         .requestMatchers("/students/**").hasAnyRole("ADMIN", "TEACHER")
+
+                        // Dashboard access based on role
+                        .requestMatchers("/dashboard").authenticated()
+
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

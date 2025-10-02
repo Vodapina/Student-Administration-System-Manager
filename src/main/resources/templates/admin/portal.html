@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Administration Portal</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+        .portal-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            background: white;
+            color: #2c3e50;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .btn:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: #2c3e50;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: white;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="portal-card">
+        <h1>Administration Portal</h1>
+
+        <!-- Info Message -->
+        <div th:if="${message}" class="alert info" th:text="${message}"></div>
+
+        <p style="margin-bottom: 30px; opacity: 0.9;">
+            System administration and user management portal
+        </p>
+
+        <!-- Show Register button only if no admin exists -->
+        <div th:if="${allowRegistration}">
+            <a th:href="@{/register}" class="btn">Create Administrator Account</a>
+            <div style="font-size: 14px; opacity: 0.8; margin: 10px 0;">
+                First-time setup: Create the initial administrator account
+            </div>
+        </div>
+
+        <!-- Always show Login button -->
+        <a th:href="@{/login}" class="btn btn-outline">Administrator Login</a>
+
+        <a href="/" class="back-link">← Back to Main Portal</a>
+    </div>
+</div>
+</body>
+</html>

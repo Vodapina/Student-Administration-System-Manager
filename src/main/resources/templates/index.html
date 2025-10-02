@@ -8,154 +8,152 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f8f9fa;
-            color: #333;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 80px 0;
-            text-align: center;
+            min-height: 100vh;
         }
-
-        .hero h1 {
-            font-size: 3em;
-            margin: 0 0 20px 0;
-            font-weight: 300;
-        }
-
-        .hero p {
-            font-size: 1.2em;
-            margin: 0 0 30px 0;
-            opacity: 0.9;
-        }
-
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 40px 20px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: #3498db;
-            color: white;
-            padding: 15px 30px;
-            text-decoration: none;
-            border-radius: 6px;
-            margin: 10px;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background: #2980b9;
-        }
-
-        .btn-secondary {
-            background: #95a5a6;
-        }
-
-        .btn-secondary:hover {
-            background: #7f8c8d;
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin: 50px 0;
-        }
-
-        .feature-card {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
             text-align: center;
-            border-top: 4px solid #3498db;
         }
-
-        .feature-card h3 {
-            color: #2c3e50;
-            margin-top: 0;
+        .header {
+            margin-bottom: 60px;
         }
-
-        .feature-card p {
-            color: #7f8c8d;
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-bottom: 50px;
+        }
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .portal-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 40px 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .portal-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .portal-title {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+        .portal-description {
+            margin-bottom: 25px;
+            opacity: 0.8;
             line-height: 1.6;
         }
-
-        .footer {
-            background: #2c3e50;
-            color: white;
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
-        }
-
-        .role-section {
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
             background: white;
-            padding: 40px;
-            border-radius: 10px;
-            margin: 30px 0;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
         }
-
-        .role-section h2 {
-            color: #2c3e50;
-            border-bottom: 2px solid #3498db;
-            padding-bottom: 10px;
+        .btn:hover {
+            background: #f8f9fa;
+            transform: scale(1.05);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+        }
+        .btn-outline:hover {
+            background: white;
+            color: #667eea;
+        }
+        .features {
+            margin-top: 60px;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            max-width: 900px;
+            margin: 60px auto 0;
+        }
+        .feature {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        @media (max-width: 768px) {
+            .portal-grid, .features {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
 <body>
-<div class="hero">
-    <h1>Student Administration System</h1>
-    <p>Comprehensive School Management Solution</p>
-    <div>
-        <a href="/login" class="btn">Login to System</a>
-        <a href="/register" class="btn btn-secondary">Create Account</a>
-    </div>
-</div>
-
 <div class="container">
+    <div class="header">
+        <h1>Student Administration System</h1>
+        <div class="subtitle">
+            Form 6 Science - Biology Focus
+        </div>
+    </div>
+
+    <div class="portal-grid">
+        <!-- Student & Teacher Portal -->
+        <div class="portal-card">
+            <div class="portal-title">Student & Teacher Portal</div>
+            <div class="portal-description">
+                Access your courses, view grades, manage attendance, and track academic progress.
+                For registered students and teachers only.
+            </div>
+            <a href="/login" class="btn">Login to Portal</a>
+        </div>
+
+        <!-- Administration Portal -->
+        <div class="portal-card">
+            <div class="portal-title">Administration Portal</div>
+            <div class="portal-description">
+                Manage user accounts, system settings, and administrative functions.
+                For system administrators only.
+            </div>
+            <a href="/admin/portal" class="btn btn-outline">Administration Portal</a>
+        </div>
+    </div>
+
     <div class="features">
-        <div class="feature-card">
-            <h3>Student Management</h3>
-            <p>Comprehensive student records, attendance tracking, and academic performance monitoring for all students.</p>
+        <div class="feature">
+            <strong>Grade Management</strong>
+            <div style="margin-top: 8px; font-size: 0.9em; opacity: 0.8;">
+                Track and manage Biology grades
+            </div>
         </div>
-
-        <div class="feature-card">
-            <h3>Grade Management</h3>
-            <p>Efficient A-F grading system with detailed reporting and progress tracking for better academic outcomes.</p>
+        <div class="feature">
+            <strong>Attendance System</strong>
+            <div style="margin-top: 8px; font-size: 0.9em; opacity: 0.8;">
+                Record and monitor class attendance
+            </div>
         </div>
-
-        <div class="feature-card">
-            <h3>Communication Platform</h3>
-            <p>Seamless communication between teachers, students, and administrators with real-time notifications.</p>
+        <div class="feature">
+            <strong>User Management</strong>
+            <div style="margin-top: 8px; font-size: 0.9em; opacity: 0.8;">
+                Secure role-based access control
+            </div>
         </div>
     </div>
-
-    <div class="role-section">
-        <h2>For Students</h2>
-        <p>Access your grades, attendance records, class schedules, and communicate with teachers through our intuitive student portal.</p>
-    </div>
-
-    <div class="role-section">
-        <h2>For Teachers</h2>
-        <p>Manage your classes, enter grades, track attendance, and communicate with students and parents efficiently.</p>
-    </div>
-
-    <div class="role-section">
-        <h2>For Administrators</h2>
-        <p>Complete system oversight with advanced reporting, user management, and academic administration tools.</p>
-    </div>
-</div>
-
-<div class="footer">
-    <p>&copy; 2025 Student Administration System.</p>
 </div>
 </body>
 </html>
