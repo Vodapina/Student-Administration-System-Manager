@@ -35,10 +35,10 @@
 <div class="container">
     <!-- Success/Error Messages -->
     <div th:if="${param.success}" class="success">
-         Attendance marked successfully for <strong th:text="${param.count}"></strong> students on <strong th:text="${param.date}"></strong>
+        ✅ Attendance marked successfully for <strong th:text="${param.count}"></strong> students on <strong th:text="${param.date}"></strong>
     </div>
     <div th:if="${param.error}" class="error">
-        Error: <span th:text="${param.error}"></span>
+        ❌ Error: <span th:text="${param.error}"></span>
     </div>
 
     <div class="card">
@@ -53,29 +53,38 @@
                            style="padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px;">
                 </div>
 
-                <div th:each="student : ${students}" class="student-row">
-                    <div class="student-info">
-                        <strong th:text="${student.fullName}"></strong>
-                        <div style="color: #666; font-size: 14px;">
-                            ID: <span th:text="${student.studentId}"></span> |
-                            Form: <span th:text="${student.formLevel}"></span>
+                <div th:if="${students != null and !students.empty}">
+                    <h3>Form 6 Biology Students</h3>
+
+                    <div th:each="student : ${students}" class="student-row">
+                        <div class="student-info">
+                            <strong th:text="${student.fullName}"></strong>
+                            <div style="color: #666; font-size: 14px;">
+                                ID: <span th:text="${student.studentId}"></span> |
+                                Form: <span th:text="${student.formLevel}"></span>
+                            </div>
+                        </div>
+
+                        <div class="attendance-options">
+                            <label>
+                                <input type="radio" th:name="|attendance_${student.id}|" value="PRESENT" required>
+                                Present
+                            </label>
+                            <label>
+                                <input type="radio" th:name="|attendance_${student.id}|" value="ABSENT">
+                                Absent
+                            </label>
+                            <label>
+                                <input type="radio" th:name="|attendance_${student.id}|" value="LATE">
+                                Late
+                            </label>
                         </div>
                     </div>
 
-                    <div class="attendance-options">
-                        <label>
-                            <input type="radio" th:name="|attendance_${student.id}|" value="PRESENT" required>
-                            Present
-                        </label>
-                        <label>
-                            <input type="radio" th:name="|attendance_${student.id}|" value="ABSENT">
-                            Absent
-                        </label>
-                        <label>
-                            <input type="radio" th:name="|attendance_${student.id}|" value="LATE">
-                            Late
-                        </label>
-                    </div>
+                    <!-- ADDED SUBMIT BUTTON -->
+                    <button type="submit" class="btn btn-success" style="margin-top: 20px;">
+                        Mark Attendance for Selected Date
+                    </button>
                 </div>
 
                 <div th:if="${students == null or students.empty}">
