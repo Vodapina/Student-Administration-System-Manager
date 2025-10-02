@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Biology Attendance - Teacher Portal</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f8f9fa; color: #333; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .header { background: linear-gradient(135deg, #2c3e50, #3498db); color: white; padding: 30px 0; margin-bottom: 30px; }
+        .header-content { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .btn { background: #3498db; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; display: inline-block; margin: 8px 8px 8px 0; border: none; cursor: pointer; }
+        .btn:hover { background: #2980b9; }
+        .btn-success { background: #27ae60; }
+        .btn-success:hover { background: #219653; }
+        .card { background: white; padding: 30px; border-radius: 10px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.08); border-left: 4px solid #3498db; }
+        .success { background: #d4edda; color: #155724; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; margin: 15px 0; border: 1px solid #f5c6cb; }
+        .attendance-form { background: #f8f9fa; padding: 20px; border-radius: 8px; margin: 20px 0; }
+        .student-row { display: flex; justify-content: space-between; align-items: center; padding: 15px; margin: 10px 0; background: white; border-radius: 8px; border-left: 4px solid #3498db; }
+        .student-info { flex: 1; }
+        .attendance-options { display: flex; gap: 15px; }
+        .attendance-option label { margin-left: 5px; }
+        h1 { margin: 0; font-size: 2.5em; font-weight: 300; }
+        h2 { color: #2c3e50; margin-top: 0; }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="header-content">
+        <h1>Biology Class Attendance</h1>
+        <p>Form 6 Biology - Mark Student Attendance</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Success/Error Messages -->
+    <div th:if="${param.success}" class="success">
+         Attendance marked successfully for <strong th:text="${param.count}"></strong> students on <strong th:text="${param.date}"></strong>
+    </div>
+    <div th:if="${param.error}" class="error">
+        Error: <span th:text="${param.error}"></span>
+    </div>
+
+    <div class="card">
+        <h2>Mark Biology Attendance</h2>
+        <p>Select date and mark attendance for Form 6 Biology students.</p>
+
+        <div class="attendance-form">
+            <form th:action="@{/teacher/biology/attendance/mark}" method="post">
+                <div style="margin-bottom: 20px;">
+                    <label for="date" style="font-weight: bold; display: block; margin-bottom: 8px;">Attendance Date:</label>
+                    <input type="date" id="date" name="date" th:value="${selectedDate}" required
+                           style="padding: 10px; border: 2px solid #ddd; border-radius: 5px; font-size: 16px;">
+                </div>
+
+                <div th:each="student : ${students}" class="student-row">
+                    <div class="student-info">
+                        <strong th:text="${student.fullName}"></strong>
+                        <div style="color: #666; font-size: 14px;">
+                            ID: <span th:text="${student.studentId}"></span> |
+                            Form: <span th:text="${student.formLevel}"></span>
+                        </div>
+                    </div>
+
+                    <div class="attendance-options">
+                        <label>
+                            <input type="radio" th:name="|attendance_${student.id}|" value="PRESENT" required>
+                            Present
+                        </label>
+                        <label>
+                            <input type="radio" th:name="|attendance_${student.id}|" value="ABSENT">
+                            Absent
+                        </label>
+                        <label>
+                            <input type="radio" th:name="|attendance_${student.id}|" value="LATE">
+                            Late
+                        </label>
+                    </div>
+                </div>
+
+                <div th:if="${students == null or students.empty}">
+                    <p style="text-align: center; color: #7f8c8d; padding: 40px;">
+                        No students found in Form 6 Biology class.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="card">
+        <h3>Teacher Navigation</h3>
+        <a href="/teacher/biology/attendance/view" class="btn">View Attendance Records</a>
+        <a href="/teacher/biology/grades" class="btn">Enter Biology Grades</a>
+        <a href="/dashboard" class="btn" style="background: #95a5a6;">Back to Dashboard</a>
+    </div>
+</div>
+</body>
+</html>
