@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - School Administration System</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            max-width: 420px;
+            width: 90%;
+            padding: 40px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-top: 5px solid #4a6cf7;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo h1 {
+            color: #2c3e50;
+            margin: 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        .logo p {
+            color: #7f8c8d;
+            margin: 5px 0 0 0;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+        }
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e8ecef;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            outline: none;
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #4a6cf7, #6a82fb);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(74, 108, 247, 0.4);
+        }
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #7f8c8d;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        .back-link:hover {
+            color: #4a6cf7;
+        }
+        .alert {
+            padding: 15px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .error {
+            background-color: #ffeaea;
+            color: #d63031;
+            border: 1px solid #ffcccc;
+        }
+        .success {
+            background-color: #e8f7ef;
+            color: #00b894;
+            border: 1px solid #b8f1d6;
+        }
+        .system-info {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+            color: #95a5a6;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+<div class="login-container">
+    <div class="logo">
+        <h1>SchoolAdmin System</h1>
+        <p>Secure Login Portal</p>
+    </div>
+
+    <!-- Error Message -->
+    <div th:if="${param.error}" class="alert error">
+        <strong>Login Failed</strong><br>
+        Invalid username or password. Please try again.
+    </div>
+
+    <!-- Success Message (for registration) -->
+    <div th:if="${param.success}" class="alert success">
+        <strong>Registration Successful</strong><br>
+        Your account has been created. Please login.
+    </div>
+
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required
+                   placeholder="Enter your username">
+        </div>
+
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required
+                   placeholder="Enter your password">
+        </div>
+
+        <button type="submit">Login to System</button>
+    </form>
+
+    <a href="/" class="back-link">← Back to Home Page</a>
+
+    <div class="system-info">
+        Form 6 Science - Biology Focus<br>
+        Student Administration System
+    </div>
+</div>
+</body>
+</html>

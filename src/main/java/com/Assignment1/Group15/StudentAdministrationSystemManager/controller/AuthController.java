@@ -2,10 +2,8 @@ package com.Assignment1.Group15.StudentAdministrationSystemManager.controller;
 
 import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.User;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.Student;
-import com.Assignment1.Group15.StudentAdministrationSystemManager.entity.Subject;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.service.UserService;
 import com.Assignment1.Group15.StudentAdministrationSystemManager.service.StudentService;
-import com.Assignment1.Group15.StudentAdministrationSystemManager.service.SubjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,17 +22,13 @@ public class AuthController {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private SubjectService subjectService;
-
-    // Show public registration form - ONLY FOR ADMIN REGISTRATION
-    // Show public registration form - SIMPLE VERSION
+    // ===== PUBLIC REGISTRATION (First Admin Only) =====
     @GetMapping("/register")
     public String showRegistrationForm() {
         System.out.println("=== REGISTRATION FORM ACCESSED ===");
         return "register";
     }
-    // Process public registration
+
     @PostMapping("/register")
     public String registerUser(
             @RequestParam String username,
@@ -78,13 +72,12 @@ public class AuthController {
         }
     }
 
-    // Admin Portal Entry Point - DEBUG VERSION
+    // ===== ADMIN PORTAL =====
     @GetMapping("/admin/portal")
     public String adminPortal(Model model) {
         System.out.println("=== ADMIN PORTAL ACCESSED ===");
 
         try {
-            // Test the UserService method
             boolean adminExists = userService.doesAdminExist();
             System.out.println("Admin exists result: " + adminExists);
 
@@ -96,30 +89,22 @@ public class AuthController {
         } catch (Exception e) {
             System.out.println("ERROR in adminPortal: " + e.getMessage());
             e.printStackTrace();
-            // Fallback values
             model.addAttribute("allowRegistration", true);
             model.addAttribute("message", "System setup required");
         }
 
         return "admin/portal";
     }
-    // ADMIN-ONLY: Show user registration form (for creating students/teachers)
+
     @GetMapping("/admin/register-user")
     public String showAdminUserRegistrationForm(Model model) {
-        // Check if user is authenticated and is admin
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
-            return "redirect:/login";
+            return "redirect:/login";  // Changed from "/student-login"
         }
-
-        // In a real app, you'd check roles properly via UserService
-        // For now, we'll assume this endpoint is secured via SecurityConfig
         return "admin/register-user";
     }
 
-
-
-    // ADMIN-ONLY: Process user registration (for creating students/teachers)
     @PostMapping("/admin/register-user")
     public String registerUserAsAdmin(
             @RequestParam String username,
@@ -144,7 +129,6 @@ public class AuthController {
                         ? fullName
                         : username;
 
-                // FIXED: Correct method call with 4 parameters
                 Student student = studentService.createStudent(user, generatedStudentId, studentFullName, "6");
             }
 
@@ -157,22 +141,10 @@ public class AuthController {
         }
     }
 
-    // Show login form
+    // ===== LOGIN PAGES =====
     @GetMapping("/login")
-    public String showLoginForm() {
-        return "login";
+    public String showLogin() {
+        System.out.println("=== UNIVERSAL LOGIN PAGE ===");
+        return "login";  // Changed from "student-login" to "login"
     }
-    @GetMapping("/student-login")
-    public String showStudentLogin() {
-        System.out.println("=== STUDENT/TEACHER LOGIN PAGE ===");
-        return "student-login";
-    }
-
-    // Admin login page
-    @GetMapping("/admin-login")
-    public String showAdminLogin() {
-        System.out.println("=== ADMIN LOGIN PAGE ===");
-        return "admin-login";
-    }
-
 }

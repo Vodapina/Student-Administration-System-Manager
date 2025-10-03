@@ -58,10 +58,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/student-login")  // Change from "/login" to "/student-login"
-                        .loginProcessingUrl("/login")  // Keep this as /login (Spring Security processing URL)
+                        .loginPage("/login")  // Changed from "/student-login" to "/login"
+                        .loginProcessingUrl("/login")
                         .defaultSuccessUrl("/dashboard", true)
-                        .failureUrl("/student-login?error=true")  // Update failure URL too
+                        .failureUrl("/login?error=true")
                         .permitAll()
                 )
                 .logout(logout -> logout
