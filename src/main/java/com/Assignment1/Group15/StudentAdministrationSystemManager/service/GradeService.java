@@ -25,22 +25,34 @@ public class GradeService {
 
     // Enter grade for a student in Biology
     public Grade enterBiologyGrade(Student student, String gradeValue, String term) {
+        System.out.println("=== DEBUG: Entering Biology Grade ===");
+        System.out.println("Student: " + student.getFullName() + " (ID: " + student.getId() + ")");
+        System.out.println("Grade: " + gradeValue + ", Term: " + term);
+
         // Get Biology subject
         Subject biology = subjectService.getSubjectByCode("BIO6")
                 .orElseThrow(() -> new RuntimeException("Biology subject not found"));
+
+        System.out.println("Biology subject: " + biology.getSubjectName() + " (ID: " + biology.getId() + ")");
 
         // Check if grade already exists for this term
         Optional<Grade> existingGrade = gradeRepository.findByStudentAndSubjectAndTerm(student, biology, term);
 
         if (existingGrade.isPresent()) {
             // Update existing grade
+            System.out.println("Updating existing grade...");
             Grade grade = existingGrade.get();
             grade.setGrade(gradeValue);
-            return gradeRepository.save(grade);
+            Grade savedGrade = gradeRepository.save(grade);
+            System.out.println("✅ Grade UPDATED successfully! Grade ID: " + savedGrade.getId());
+            return savedGrade;
         } else {
             // Create new grade
+            System.out.println("Creating new grade...");
             Grade grade = new Grade(student, biology, gradeValue, term);
-            return gradeRepository.save(grade);
+            Grade savedGrade = gradeRepository.save(grade);
+            System.out.println("✅ Grade CREATED successfully! Grade ID: " + savedGrade.getId());
+            return savedGrade;
         }
     }
 
