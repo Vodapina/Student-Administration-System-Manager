@@ -28,13 +28,13 @@ public class DataLoader implements CommandLineRunner {
             subjectService.createSubject("COM6", "Computer Studies", "Form 6 Computer Studies");
             subjectService.createSubject("ENG6", "English", "Form 6 English");
 
-            System.out.println("✅ Form 6 Science subjects created!");
+            System.out.println("Form 6 Science subjects created!");
         }
 
         // Create sample admin user if not exists
         if (userService.findByUsername("admin") == null) {
             userService.registerUser("admin", "admin123", "admin@school.com", "ADMIN");
-            System.out.println("✅ Admin user created!");
+            System.out.println(" Admin user created!");
         }
     }
 }

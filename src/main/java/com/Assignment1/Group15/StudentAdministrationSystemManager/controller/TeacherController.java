@@ -33,16 +33,19 @@ public class TeacherController {
         try {
             System.out.println("=== TEACHER GRADES PAGE LOADING ===");
 
-            // DEBUG: Check if studentService is working
-            System.out.println("StudentService: " + (studentService != null ? "OK" : "NULL"));
 
             // Get all students
             List<Student> students = studentService.getAllStudents();
             System.out.println("Found " + students.size() + " students");
 
-            // DEBUG: Print each student
+            // DEBUG: Print each student's details
             for (Student student : students) {
-                System.out.println("Student: " + student.getFullName() + " ID: " + student.getId());
+                System.out.println("=== STUDENT DEBUG ===");
+                System.out.println("Student ID: " + student.getStudentId());
+                System.out.println("First Name: '" + student.getFirstName() + "'");
+                System.out.println("Last Name: '" + student.getLastName() + "'");
+                System.out.println("Form Level: " + student.getFormLevel());
+                System.out.println("=== END DEBUG ===");
             }
 
             model.addAttribute("students", students);
@@ -50,12 +53,11 @@ public class TeacherController {
 
         } catch (Exception e) {
             System.out.println("ERROR in biologyGradesPage: " + e.getMessage());
-            e.printStackTrace(); // THIS WILL SHOW THE FULL STACK TRACE
+            e.printStackTrace();
             model.addAttribute("error", "Error loading students: " + e.getMessage());
             return "teacher/biology-grades";
         }
     }
-
     // FIXED: Now using your enterBiologyGrade method!
     @PostMapping("/biology/grades/enter")
     public String enterBiologyGrade(

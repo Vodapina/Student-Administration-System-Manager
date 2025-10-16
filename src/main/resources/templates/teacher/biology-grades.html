@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Biology Grades</title>
@@ -30,14 +30,14 @@
 
     <!-- SUCCESS MESSAGE -->
     <div th:if="${param.success}" class="success">
-        ✅ Grade entered successfully!
+        Grade entered successfully!
         <span th:if="${param.student}"> for <strong th:text="${param.student}"></strong></span>
         <span th:if="${param.grade}">: <strong th:text="${param.grade}"></strong></span>
     </div>
 
     <!-- ERROR MESSAGE -->
     <div th:if="${param.error}" class="error">
-        ❌ Error: <span th:text="${param.error}"></span>
+        Error: <span th:text="${param.error}"></span>
     </div>
 
     <!-- MESSAGE FROM CONTROLLER -->
@@ -53,7 +53,7 @@
                     <option value="">Choose student...</option>
                     <option th:each="student : ${students}"
                             th:value="${student.id}"
-                            th:text="${student.fullName + ' (' + student.studentId + ')'}">
+                            th:text="${(student.firstName != null and !student.firstName.isEmpty() ? student.firstName : 'First') + ' ' + (student.lastName != null and !student.lastName.isEmpty() ? student.lastName : 'Last') + ' (' + student.studentId + ')'}">
                     </option>
                 </select>
             </div>
@@ -84,16 +84,18 @@
         </form>
     </div>
 
-    <!-- Student List -->
+    <!-- Student List - SAFE VERSION -->
     <div th:if="${students != null and !students.empty}">
         <h3>Available Students (<span th:text="${students.size()}"></span>):</h3>
         <div style="background: #f8f9fa; padding: 15px; border-radius: 5px;">
             <ul>
                 <li th:each="student : ${students}"
-                    th:text="${student.fullName + ' - ' + student.studentId + ' (ID: ' + student.id + ')'}"></li>
+                    th:text="${(student.firstName != null and !student.firstName.isEmpty() ? student.firstName : 'First') + ' ' + (student.lastName != null and !student.lastName.isEmpty() ? student.lastName : 'Last') + ' - ' + student.studentId + ' (ID: ' + student.id + ')'}">
+                </li>
             </ul>
         </div>
     </div>
+
 
     <div style="margin-top: 20px;">
         <a href="/teacher/biology/grades/view" class="btn">View All Biology Grades</a>

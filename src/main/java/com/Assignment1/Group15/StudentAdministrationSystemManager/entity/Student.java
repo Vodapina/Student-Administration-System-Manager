@@ -16,7 +16,9 @@ public class Student {
     private User user;
 
     @Column(unique = true, nullable = false)
-    private String studentId; // e.g., "F6SCI001"
+    private String studentId; // This will be the username (e.g., "S11200631")
+
+    private String email; // Auto-generated email (e.g., "s11200631@student.com")
 
     @Column(nullable = false)
     private String firstName;
@@ -40,6 +42,27 @@ public class Student {
         this.studentId = studentId;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = generateEmailFromStudentId(studentId);
+    }
+
+    public Student(String studentId, String firstName, String lastName) {
+        this.studentId = studentId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = generateEmailFromStudentId(studentId);
+    }
+
+    // Auto-generate email from student ID
+    private String generateEmailFromStudentId(String studentId) {
+        if (studentId == null || studentId.trim().isEmpty()) {
+            return null;
+        }
+        return studentId.toLowerCase() + "@student.com";
+    }
+
+    // Auto-generate username from student ID (same as studentId)
+    public String getUsername() {
+        return this.studentId;
     }
 
     // Getters and Setters
@@ -50,7 +73,16 @@ public class Student {
     public void setUser(User user) { this.user = user; }
 
     public String getStudentId() { return studentId; }
-    public void setStudentId(String studentId) { this.studentId = studentId; }
+    public void setStudentId(String studentId) {
+        this.studentId = studentId;
+        // Auto-update email when student ID changes
+        if (studentId != null && !studentId.trim().isEmpty()) {
+            this.email = generateEmailFromStudentId(studentId);
+        }
+    }
+
+    public String getEmail() { return email; }
+    public void setEmail(String email) { this.email = email; }
 
     public String getFirstName() { return firstName; }
     public void setFirstName(String firstName) { this.firstName = firstName; }
@@ -76,9 +108,16 @@ public class Student {
     public String getScienceStream() { return scienceStream; }
     public void setScienceStream(String scienceStream) { this.scienceStream = scienceStream; }
 
-    // Helper method
+    // Helper methods
     public String getFullName() {
-        return firstName + " " + lastName;
+        if (firstName == null && lastName == null) {
+            return studentId; // Fallback to student ID if names are null
+        }
+        return (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : "");
+    }
+
+    public String getGeneratedCredentials() {
+        return String.format("Username: %s | Email: %s", getUsername(), getEmail());
     }
 
     @Override
@@ -86,6 +125,7 @@ public class Student {
         return "Student{" +
                 "id=" + id +
                 ", studentId='" + studentId + '\'' +
+                ", email='" + email + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", formLevel='" + formLevel + '\'' +
