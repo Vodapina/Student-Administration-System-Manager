@@ -20,14 +20,6 @@
     <h1>Biology Grade Management</h1>
     <p>Form 6 Biology - Enter Student Grades</p>
 
-    <!-- DEBUG INFO -->
-    <div class="debug">
-        <strong>DEBUG:</strong>
-        Page: biology-grades.html |
-        Controller: Working! |
-        Time: <span th:text="${#temporals.format(#temporals.createNow(), 'HH:mm:ss')}"></span>
-    </div>
-
     <!-- SUCCESS MESSAGE -->
     <div th:if="${param.success}" class="success">
         Grade entered successfully!
